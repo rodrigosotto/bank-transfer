@@ -22,17 +22,15 @@ const ListAccounts: React.FC = () => {
     };
 
     fetchAccounts();
-
-    // Conectar ao Socket.IO
     const socket = io("http://localhost:3000");
 
-    // Ouvir eventos de transferência
+
     socket.on("transfer", (data) => {
       console.log("Transferência recebida:", data);
-      // Atualizar as contas após a transferência
+  
       setAccounts((prevAccounts) => {
         return prevAccounts.map((account) => {
-          // Se a conta for a de origem, subtrai o valor transferido
+
           if (account.id === data.account_from) {
             const currentBalance =
               typeof account.balance === "string"
@@ -40,18 +38,17 @@ const ListAccounts: React.FC = () => {
                 : account.balance;
             return {
               ...account,
-              balance: currentBalance - data.amount, // Faz a subtração com balance como number
+              balance: currentBalance - data.amount,
             };
           }
 
-          // Se a conta for a de destino, adiciona o valor transferido
           if (account.id === data.account_to) {
             return {
               ...account,
-              balance: account.balance + data.amount, // continua como number
+              balance: account.balance + data.amount,
             };
           }
-          return account; // Retorna a conta inalterada
+          return account;
         });
       });
     });
@@ -62,23 +59,28 @@ const ListAccounts: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <h2 className="text-lg font-bold mb-2">Contas Bancárias</h2>
-      <ul>
+    <div className="flex items-center justify-center min-h-screen bg-gray-900">
+    <div className="max-w-2xl w-full p-6 bg-gray-800 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-4 text-center text-white">Contas Bancarias</h2>
+        <ul className="space-y-4">
         {accounts.length === 0 ? (
-          <li>Nenhuma conta encontrada.</li>
+          <li className="border border-gray-600 p-4 rounded bg-gray-700 hover:shadow-md transition-shadow duration-200"> Nenhuma conta encontrada.</li>
         ) : (
           accounts.map((account) => (
-            <li key={account.id}>
-                <strong>{account.name}</strong>:R$ {" "}
+            <li key={account.id} className="border border-gray-600 p-4 rounded bg-gray-700 hover:shadow-md transition-shadow duration-200">
+                 <span className="font-semibold text-white">{account.name}: </span> 
+                 <span className="font-semibold text-blue-400">
+                 R$ {" "}
                 {account.balance !== null
-                    ? parseFloat(account.balance as string).toFixed(2) // converte para número e formata
+                    ? parseFloat(account.balance as string).toFixed(2)
                     : "Saldo inválido"}
+                 </span>
             </li>
         ))
         
         )}
       </ul>
+    </div>
     </div>
   );
 };
