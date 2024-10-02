@@ -39,14 +39,6 @@ Esta é uma aplicação web para administração de contas bancárias, permitind
 ├── package.json
 └── README.md
 
-Claro! Aqui está um exemplo de README para a sua aplicação de administração de contas bancárias com React, Redux, e uma API em Node.js. Este README inclui informações sobre a aplicação, como instalá-la, usá-la, e uma visão geral da estrutura do projeto.
-
-markdown
-Copiar código
-# Aplicação de Administração de Contas Bancárias
-
-Esta é uma aplicação web para administração de contas bancárias, permitindo que os usuários criem contas, realizem transferências de fundos e consultem movimentações. A aplicação foi desenvolvida utilizando React, Redux, e uma API backend em Node.js.
-
 ## Tecnologias Utilizadas
 
 - **Frontend**: React, Redux, TypeScript, TailwindCSS
@@ -60,29 +52,6 @@ Esta é uma aplicação web para administração de contas bancárias, permitind
 - Realização de transferências entre contas
 - Consulta de movimentações realizadas
 - Interface responsiva e estilizada com TailwindCSS
-
-## Estrutura do Projeto
-
-```plaintext
-.
-├── public
-│   └── index.html
-├── src
-│   ├── api
-│   │   └── api.ts              # Funções para comunicação com a API
-│   ├── components
-│   │   ├── FundTransfer.tsx     # Componente para transferências
-│   │   ├── TransactionList.tsx   # Componente para listar movimentações
-│   │   └── ...                  # Outros componentes
-│   ├── store
-│   │   ├── accountSlice.ts      # Slice do Redux para contas
-│   │   └── store.ts             # Configuração do Redux
-│   ├── types
-│   │   └── types.ts             # Definições de tipos TypeScript
-│   ├── App.tsx                  # Componente principal da aplicação
-│   └── index.tsx                # Ponto de entrada da aplicação
-├── package.json
-└── README.md
 
 # Instalação
 
