@@ -3,15 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { transferFundsApi } from "../api/api";
 import { createTransaction, updateBalance } from "../store/accountSlice";
 import { RootState } from "../store";
-import { Account } from "./../types/types";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const TransferForm = () => {
+interface FundTransferProps {
+  onBack: () => void;
+}
+
+const TransferForm: React.FC<FundTransferProps> = ({ onBack }) => {
   const [accountFrom, setAccountFrom] = useState<number | null>(null);
   const [accountTo, setAccountTo] = useState<number | null>(null);
   const [amount, setAmount] = useState<number>(0);
   const dispatch = useDispatch();
   const accounts = useSelector((state: RootState) => state.accounts.accounts);
-  const [localAccounts, setLocalAccounts] = useState(accounts);
+
+  useEffect(() => {}, [accounts]);
 
   const handleTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +29,7 @@ const TransferForm = () => {
           account_to: accountTo,
           amount,
         });
+
         if (response.message) {
           // Criar transação
           dispatch(
@@ -34,55 +41,43 @@ const TransferForm = () => {
           );
 
           // Atualizar saldo localmente
-          setLocalAccounts((prevAccounts) =>
-            prevAccounts.map((account) => {
-              if (account.id === accountFrom) {
-                return {
-                  ...account,
-                  balance: Number(account.balance) - amount,
-                };
-              }
-              if (account.id === accountTo) {
-                return {
-                  ...account,
-                  balance: Number(account.balance) + amount,
-                };
-              }
-              return account;
-            })
-          );
+          const fromBalance =
+            Number(accounts.find((a) => a.id === accountFrom)?.balance) -
+            amount;
+          const toBalance =
+            Number(accounts.find((a) => a.id === accountTo)?.balance) + amount;
 
-          dispatch(
-            updateBalance({
-              id: accountFrom,
-              newBalance:
-                Number(accounts.find((a) => a.id === accountFrom)?.balance) -
-                amount,
-            })
-          );
+          dispatch(updateBalance({ id: accountFrom, newBalance: fromBalance }));
+          dispatch(updateBalance({ id: accountTo, newBalance: toBalance }));
 
-          dispatch(
-            updateBalance({
-              id: accountTo,
-              newBalance:
-                Number(accounts.find((a) => a.id === accountTo)?.balance) +
-                amount,
-            })
-          );
+          // Notificar sucesso
+          toast.success("Transferência realizada com sucesso!");
 
+          // Resetar campos
           setAccountFrom(null);
           setAccountTo(null);
           setAmount(0);
         }
-      } catch (error) {
-        console.error("Erro na transferência:", error);
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(
+            `Erro: ${error.response.data.message || "Erro desconhecido."}`
+          );
+        } else {
+          toast.error("Erro de rede ou servidor.");
+        }
       }
     }
   };
-  // useEffect para sincronizar localAccounts com o estado global accounts
-  useEffect(() => {
-    setLocalAccounts(accounts);
-  }, [accounts]); // Atualiza localAccounts sempre que accounts muda
+
+  const getUniqueAccounts = (excludeId: number | null) => {
+    const uniqueAccounts = accounts.filter(
+      (account, index, self) =>
+        index === self.findIndex((a) => a.id === account.id)
+    );
+
+    return uniqueAccounts.filter((account) => account.id !== excludeId);
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
@@ -100,14 +95,17 @@ const TransferForm = () => {
           </label>
           <select
             value={accountFrom ?? ""}
-            onChange={(e) => setAccountFrom(Number(e.target.value))}
+            onChange={(e) => {
+              setAccountFrom(Number(e.target.value));
+              setAccountTo(null); // Reseta a conta de destino quando a origem mudar
+            }}
             className="border border-gray-600 rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="" disabled>
               Selecione a conta de origem
             </option>
-            {accounts.map((account: Account, index: number) => (
-              <option key={`${account.id}-${index}`} value={account.id}>
+            {getUniqueAccounts(null).map((account) => (
+              <option key={account.id} value={account.id}>
                 {account.name}
               </option>
             ))}
@@ -126,8 +124,8 @@ const TransferForm = () => {
             <option value="" disabled>
               Selecione a conta de destino
             </option>
-            {accounts.map((account: Account, index: number) => (
-              <option key={`${account.id}-${index}`} value={account.id}>
+            {getUniqueAccounts(accountFrom).map((account) => (
+              <option key={account.id} value={account.id}>
                 {account.name}
               </option>
             ))}
@@ -153,7 +151,15 @@ const TransferForm = () => {
         >
           Transferir
         </button>
+        <button
+          type="button"
+          onClick={onBack}
+          className="mt-4 w-full bg-slate-600 text-white py-2 rounded hover:bg-blue-700 transition duration-200"
+        >
+          Ver opções
+        </button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

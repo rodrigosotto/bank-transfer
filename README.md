@@ -1,50 +1,101 @@
-# React + TypeScript + Vite
+# Aplicação de Administração de Contas Bancárias
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Esta é uma aplicação web para administração de contas bancárias, permitindo que os usuários criem contas, realizem transferências de fundos e consultem movimentações. A aplicação foi desenvolvida utilizando React, Redux, e uma API backend em Node.js.
 
-Currently, two official plugins are available:
+## Tecnologias Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Frontend**: React, Redux, TypeScript, TailwindCSS
+- **Backend**: Node.js, Express, MySQL
+- **Bibliotecas**: React Toastify para notificações, Axios para requisições HTTP
+- **Gestão de Estado**: Redux para gerenciamento global do estado da aplicação
 
-## Expanding the ESLint configuration
+## Funcionalidades
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Criação de contas bancárias
+- Realização de transferências entre contas
+- Consulta de movimentações realizadas
+- Interface responsiva e estilizada com TailwindCSS
 
-- Configure the top-level `parserOptions` property like this:
+## Estrutura do Projeto
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+```plaintext
+.
+├── public
+│   └── index.html
+├── src
+│   ├── api
+│   │   └── api.ts              # Funções para comunicação com a API
+│   ├── components
+│   │   ├── FundTransfer.tsx     # Componente para transferências
+│   │   ├── TransactionList.tsx   # Componente para listar movimentações
+│   │   └── ...                  # Outros componentes
+│   ├── store
+│   │   ├── accountSlice.ts      # Slice do Redux para contas
+│   │   └── store.ts             # Configuração do Redux
+│   ├── types
+│   │   └── types.ts             # Definições de tipos TypeScript
+│   ├── App.tsx                  # Componente principal da aplicação
+│   └── index.tsx                # Ponto de entrada da aplicação
+├── package.json
+└── README.md
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Claro! Aqui está um exemplo de README para a sua aplicação de administração de contas bancárias com React, Redux, e uma API em Node.js. Este README inclui informações sobre a aplicação, como instalá-la, usá-la, e uma visão geral da estrutura do projeto.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+markdown
+Copiar código
+# Aplicação de Administração de Contas Bancárias
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Esta é uma aplicação web para administração de contas bancárias, permitindo que os usuários criem contas, realizem transferências de fundos e consultem movimentações. A aplicação foi desenvolvida utilizando React, Redux, e uma API backend em Node.js.
+
+## Tecnologias Utilizadas
+
+- **Frontend**: React, Redux, TypeScript, TailwindCSS
+- **Backend**: Node.js, Express, MySQL
+- **Bibliotecas**: React Toastify para notificações, Axios para requisições HTTP
+- **Gestão de Estado**: Redux para gerenciamento global do estado da aplicação
+
+## Funcionalidades
+
+- Criação de contas bancárias
+- Realização de transferências entre contas
+- Consulta de movimentações realizadas
+- Interface responsiva e estilizada com TailwindCSS
+
+## Estrutura do Projeto
+
+```plaintext
+.
+├── public
+│   └── index.html
+├── src
+│   ├── api
+│   │   └── api.ts              # Funções para comunicação com a API
+│   ├── components
+│   │   ├── FundTransfer.tsx     # Componente para transferências
+│   │   ├── TransactionList.tsx   # Componente para listar movimentações
+│   │   └── ...                  # Outros componentes
+│   ├── store
+│   │   ├── accountSlice.ts      # Slice do Redux para contas
+│   │   └── store.ts             # Configuração do Redux
+│   ├── types
+│   │   └── types.ts             # Definições de tipos TypeScript
+│   ├── App.tsx                  # Componente principal da aplicação
+│   └── index.tsx                # Ponto de entrada da aplicação
+├── package.json
+└── README.md
+
+# Instalação
+
+## Clone o Repositório
+
+- git clone https://github.com/seu_usuario/nome_do_repositorio.git
+- cd nome_do_repositorio
+
+## Instale as dependências
+- npm install
+
+## Inicie a aplicação
+- npm run dev
+
+## Acesse a aplicação no Navegador
+- npm run dev
