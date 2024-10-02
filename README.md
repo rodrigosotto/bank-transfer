@@ -67,4 +67,3 @@ Esta é uma aplicação web para administração de contas bancárias, permitind
 - npm run dev
 
 ## Acesse a aplicação no Navegador
-- npm run dev
